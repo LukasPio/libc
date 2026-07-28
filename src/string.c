@@ -67,3 +67,9 @@ char *strncpy(char *dst, const char *restrict src, size_t dsize)
 
     return start;
 }
+
+char *strcat(char *restrict dst, const char *restrict src)
+{
+    strcpy(dst + strlen(dst), src);
+    return dst;
+}
