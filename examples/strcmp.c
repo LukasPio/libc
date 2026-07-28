@@ -1,7 +1,8 @@
 #include "string.h"
 #include <stdio.h>
 
-int main(void) {
+int main(void)
+{
     /* Equal */
     // const char *s1 = "webshell";
     // const char *s2 = "webshell";
@@ -28,11 +29,16 @@ int main(void) {
 
     int result = strcmp(s1, s2);
 
-    if (result == 0) {
+    if (result == 0)
+    {
         printf("%s is equal to %s\n", s1, s2);
-    } else if (result > 0) {
+    }
+    else if (result > 0)
+    {
         printf("%s is greater than %s\n", s1, s2);
-    } else {
+    }
+    else
+    {
         printf("%s is greater than %s\n", s2, s1);
     }
 
