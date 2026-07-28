@@ -47,3 +47,23 @@ char *strcpy(char *dst, const char *restrict src)
 
     return start;
 }
+
+char *strncpy(char *dst, const char *restrict src, size_t dsize)
+{
+    char *start = dst;
+    size_t i = 0;
+
+    while (i < dsize && *src != '\0')
+    {
+        *dst++ = *src++;
+        i++;
+    }
+
+    while (i < dsize)
+    {
+        *dst++ = '\0';
+        i++;
+    }
+
+    return start;
+}
