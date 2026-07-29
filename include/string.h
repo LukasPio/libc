@@ -9,3 +9,4 @@ char *strncpy(char *dst, const char *restrict src, size_t dsize);
 char *strcat(char *restrict dst, const char *restrict src);
 char *strchr(const char *s, int c);
 char *strrchr(const char *s, int c);
+char *strstr(const char *haystack, const char *needle);
