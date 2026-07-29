@@ -84,3 +84,17 @@ char *strchr(const char *s, int c)
     }
     return (char *)s;
 }
+
+char *strrchr(const char *s, int c) {
+    char *last = NULL;
+
+    while(*s != '\0') 
+    {
+        if ((unsigned char)*s == (unsigned char)c) last = (char *)s;
+        s++;
+    }
+
+    if ((unsigned char)c == '\0') return (char *) s;
+
+    return last;
+}
