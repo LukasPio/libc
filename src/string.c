@@ -73,3 +73,14 @@ char *strcat(char *restrict dst, const char *restrict src)
     strcpy(dst + strlen(dst), src);
     return dst;
 }
+
+char *strchr(const char *s, int c)
+{
+    while ((unsigned char)*s != (unsigned char)c)
+    {
+        if (*s == '\0')
+            return NULL;
+        s++;
+    }
+    return (char *)s;
+}
