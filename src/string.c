@@ -187,10 +187,6 @@ size_t strcspn(const char *s, const char *reject)
     return i;
 }
 
-// ",apple,banana,,orange;grape"
-
-// "apple,banana,,orange;grape"
-
 char *strtok(char *restrict str, const char *restrict delim)
 {
     static char *last;
@@ -200,7 +196,7 @@ char *strtok(char *restrict str, const char *restrict delim)
 
     if (last == NULL || *last == '\0')
         return NULL;
-    
+
     last += strspn(last, delim);
 
     if (*last == '\0')
@@ -208,7 +204,7 @@ char *strtok(char *restrict str, const char *restrict delim)
 
     char *token = last;
     last += strcspn(last, delim);
-    
+
     if (*last != '\0')
     {
         *last = '\0';
