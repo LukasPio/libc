@@ -135,3 +135,54 @@ char *strstr(const char *haystack, const char *needle)
 
     return NULL;
 }
+
+size_t strspn(const char *s, const char *accept)
+{
+    if ((unsigned char)*s == '\0')
+        return 0;
+    size_t i = 0;
+    size_t len = strlen(accept);
+    int invalid;
+    while ((unsigned char)*s != '\0')
+    {
+        invalid = 1;
+        for (size_t j = 0; j < len; j++)
+        {
+            if ((unsigned char)*s == (unsigned char)accept[j])
+            {
+                invalid = 0;
+                i++;
+                break;
+            }
+        }
+        if (invalid)
+            break;
+        s++;
+    }
+    return i;
+}
+
+size_t strcspn(const char *s, const char *reject)
+{
+    size_t i = 0;
+    size_t len = strlen(reject);
+    int invalid;
+    while ((unsigned char)*s != '\0')
+    {
+        invalid = 0;
+        for (size_t j = 0; j < len; j++)
+        {
+            if ((unsigned char)*s == (unsigned char)reject[j])
+            {
+                invalid = 1;
+                break;
+            }
+        }
+        if (invalid)
+            break;
+        i++;
+        s++;
+    }
+
+    return i;
+}
