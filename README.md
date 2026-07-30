@@ -6,8 +6,8 @@ The purpose of this repository is to understand how common C library functions w
 
 ## Current Scope
 
-- [] `string.h`
-- [] `math.h`
+- `string.h`
+- `math.h`
 
 Additional libraries may be implemented in the future.
 
