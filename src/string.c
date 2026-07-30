@@ -186,3 +186,34 @@ size_t strcspn(const char *s, const char *reject)
 
     return i;
 }
+
+// ",apple,banana,,orange;grape"
+
+// "apple,banana,,orange;grape"
+
+char *strtok(char *restrict str, const char *restrict delim)
+{
+    static char *last;
+
+    if (str != NULL)
+        last = str;
+
+    if (last == NULL || *last == '\0')
+        return NULL;
+    
+    last += strspn(last, delim);
+
+    if (*last == '\0')
+        return NULL;
+
+    char *token = last;
+    last += strcspn(last, delim);
+    
+    if (*last != '\0')
+    {
+        *last = '\0';
+        last++;
+    }
+
+    return token;
+}

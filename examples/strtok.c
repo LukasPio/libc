@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    char text[] = "apple,banana,,orange;grape";
+    char text[] = ",apple,banana,,orange;grape";
     const char *delim = ",;";
 
     char *token = strtok(text, delim);
