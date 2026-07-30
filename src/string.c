@@ -34,15 +34,18 @@ int strcmp(const char *s1, const char *s2)
     return (unsigned char)*s1 - (unsigned char)*s2;
 }
 
-int strncmp(const char *s1, const char *s2, size_t n) {
+int strncmp(const char *s1, const char *s2, size_t n)
+{
 
-    while (*s1 == *s2 && *s1 != '\0' && n > 0) {
+    while (*s1 == *s2 && *s1 != '\0' && n > 0)
+    {
         s1++;
         s2++;
         n--;
     }
 
-    if (n == 0) return 0;
+    if (n == 0)
+        return 0;
 
     return (unsigned char)*s1 - (unsigned char)*s2;
 }
@@ -98,16 +101,37 @@ char *strchr(const char *s, int c)
     return (char *)s;
 }
 
-char *strrchr(const char *s, int c) {
+char *strrchr(const char *s, int c)
+{
     char *last = NULL;
 
-    while(*s != '\0') 
+    while (*s != '\0')
     {
-        if ((unsigned char)*s == (unsigned char)c) last = (char *)s;
+        if ((unsigned char)*s == (unsigned char)c)
+            last = (char *)s;
         s++;
     }
 
-    if ((unsigned char)c == '\0') return (char *) s;
+    if ((unsigned char)c == '\0')
+        return (char *)s;
 
     return last;
+}
+
+char *strstr(const char *haystack, const char *needle)
+{
+    if (*needle == '\0')
+        return (char *)haystack;
+
+    const char *start = strchr(haystack, *needle);
+    size_t sublen = strlen(needle);
+
+    while (start != NULL)
+    {
+        if (strncmp(start, needle, sublen) == 0)
+            return (char *)start;
+        start = strchr(start + 1, *needle);
+    }
+
+    return NULL;
 }
