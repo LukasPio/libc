@@ -12,3 +12,4 @@ char *strrchr(const char *s, int c);
 char *strstr(const char *haystack, const char *needle);
 size_t strspn(const char *s, const char *accept);
 size_t strcspn(const char *s, const char *reject);
+char *strtok(char *restrict str, const char *restrict delim);
