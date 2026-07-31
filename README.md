@@ -49,8 +49,8 @@ Additional libraries may be implemented in the future.
 
 | Library | Status |
 |---------|--------|
-| `string.h` | 🚧 In Progress |
-| `math.h` | ⏳ Planned |
+| `string.h` | ✅ Completed,  |
+| `math.h`   | 🚧 In Progress |
 
 ## Notes
 
