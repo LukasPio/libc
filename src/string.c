@@ -1,212 +1,223 @@
-#include <assert.h>
-#include <stddef.h>
-#include <string.h>
+#include "string.h"
 
-int main(void)
+size_t strlen(const char *s)
 {
-    /* ===================== strlen ===================== */
+    size_t len = 0;
 
-    assert(strlen("") == 0);
-    assert(strlen("a") == 1);
-    assert(strlen("hello") == 5);
+    while (*s++ != '\0')
+        len++;
 
-    /* ===================== strnlen ===================== */
+    return len;
+}
 
-    assert(strnlen("", 5) == 0);
-    assert(strnlen("hello", 10) == 5);
-    assert(strnlen("hello", 3) == 3);
-    assert(strnlen("hello", 5) == 5);
+size_t strnlen(const char *s, size_t maxlen)
+{
+    size_t i;
 
-    /* ===================== strcmp ===================== */
-
-    assert(strcmp("abc", "abc") == 0);
-    assert(strcmp("abc", "abd") < 0);
-    assert(strcmp("abd", "abc") > 0);
-    assert(strcmp("", "") == 0);
-    assert(strcmp("", "a") < 0);
-    assert(strcmp("a", "") > 0);
-
-    /* ===================== strncmp ===================== */
-
-    assert(strncmp("abcdef", "abcxyz", 3) == 0);
-    assert(strncmp("abc", "abd", 3) < 0);
-    assert(strncmp("abd", "abc", 3) > 0);
-    assert(strncmp("abc", "xyz", 0) == 0);
-
-    /* ===================== strcpy ===================== */
-
+    for (i = 0; i < maxlen; i++)
     {
-        char dst[16];
-        assert(strcpy(dst, "hello") == dst);
-        assert(strcmp(dst, "hello") == 0);
+        if (s[i] == '\0')
+            break;
     }
 
-    /* ===================== strncpy ===================== */
+    return i;
+}
 
+int strcmp(const char *s1, const char *s2)
+{
+    while (*s1 == *s2 && *s1 != '\0')
     {
-        char dst[10];
-
-        strncpy(dst, "abc", sizeof(dst));
-        assert(strcmp(dst, "abc") == 0);
-
-        strncpy(dst, "abcdef", 3);
-        assert(dst[0] == 'a');
-        assert(dst[1] == 'b');
-        assert(dst[2] == 'c');
+        s1++;
+        s2++;
     }
 
-    /* ===================== strcat ===================== */
+    return (unsigned char)*s1 - (unsigned char)*s2;
+}
 
+int strncmp(const char *s1, const char *s2, size_t n)
+{
+
+    while (*s1 == *s2 && *s1 != '\0' && n > 0)
     {
-        char dst[32] = "hello";
-        assert(strcat(dst, " world") == dst);
-        assert(strcmp(dst, "hello world") == 0);
+        s1++;
+        s2++;
+        n--;
     }
 
-    /* ===================== strchr ===================== */
+    if (n == 0)
+        return 0;
 
+    return (unsigned char)*s1 - (unsigned char)*s2;
+}
+
+char *strcpy(char *dst, const char *restrict src)
+{
+    char *start = dst;
+
+    while (*src != '\0')
     {
-        char s[] = "banana";
-
-        assert(strchr(s, 'b') == &s[0]);
-        assert(strchr(s, 'a') == &s[1]);
-        assert(strchr(s, 'x') == NULL);
-        assert(strchr(s, '\0') == &s[6]);
+        *dst++ = *src++;
     }
 
-    /* ===================== strrchr ===================== */
+    *dst = '\0';
 
+    return start;
+}
+
+char *strncpy(char *dst, const char *restrict src, size_t dsize)
+{
+    char *start = dst;
+    size_t i = 0;
+
+    while (i < dsize && *src != '\0')
     {
-        char s[] = "banana";
-
-        assert(strrchr(s, 'a') == &s[5]);
-        assert(strrchr(s, 'b') == &s[0]);
-        assert(strrchr(s, 'x') == NULL);
-        assert(strrchr(s, '\0') == &s[6]);
+        *dst++ = *src++;
+        i++;
     }
 
-    /* ===================== strstr ===================== */
-
+    while (i < dsize)
     {
-        char s[] = "hello world";
-
-        assert(strstr(s, "hello") == s);
-        assert(strstr(s, "world") == s + 6);
-        assert(strstr(s, "lo wo") == s + 3);
-        assert(strstr(s, "") == s);
-        assert(strstr(s, "abc") == NULL);
+        *dst++ = '\0';
+        i++;
     }
 
-    /* ===================== strspn ===================== */
+    return start;
+}
 
-    assert(strspn("abcde", "abc") == 3);
-    assert(strspn("aaaaab", "a") == 5);
-    assert(strspn("xyz", "abc") == 0);
-    assert(strspn("", "abc") == 0);
+char *strcat(char *restrict dst, const char *restrict src)
+{
+    strcpy(dst + strlen(dst), src);
+    return dst;
+}
 
-    /* ===================== strcspn ===================== */
-
-    assert(strcspn("abcde", "d") == 3);
-    assert(strcspn("abcdef", "xyz") == 6);
-    assert(strcspn("banana", "an") == 1);
-    assert(strcspn("", "abc") == 0);
-
-    /* ===================== strtok ===================== */
-
+char *strchr(const char *s, int c)
+{
+    while ((unsigned char)*s != (unsigned char)c)
     {
-        char text[] = "apple,banana,,orange;grape";
+        if (*s == '\0')
+            return NULL;
+        s++;
+    }
+    return (char *)s;
+}
 
-        char *tok = strtok(text, ",;");
-        assert(strcmp(tok, "apple") == 0);
+char *strrchr(const char *s, int c)
+{
+    char *last = NULL;
 
-        tok = strtok(NULL, ",;");
-        assert(strcmp(tok, "banana") == 0);
-
-        tok = strtok(NULL, ",;");
-        assert(strcmp(tok, "orange") == 0);
-
-        tok = strtok(NULL, ",;");
-        assert(strcmp(tok, "grape") == 0);
-
-        tok = strtok(NULL, ",;");
-        assert(tok == NULL);
+    while (*s != '\0')
+    {
+        if ((unsigned char)*s == (unsigned char)c)
+            last = (char *)s;
+        s++;
     }
 
+    if ((unsigned char)c == '\0')
+        return (char *)s;
+
+    return last;
+}
+
+char *strstr(const char *haystack, const char *needle)
+{
+    if (*needle == '\0')
+        return (char *)haystack;
+
+    const char *start = strchr(haystack, *needle);
+    size_t sublen = strlen(needle);
+
+    while (start != NULL)
     {
-        char text[] = ",,,";
-        assert(strtok(text, ",") == NULL);
+        if (strncmp(start, needle, sublen) == 0)
+            return (char *)start;
+        start = strchr(start + 1, *needle);
     }
 
+    return NULL;
+}
+
+size_t strspn(const char *s, const char *accept)
+{
+    if ((unsigned char)*s == '\0')
+        return 0;
+    size_t i = 0;
+    size_t len = strlen(accept);
+    int invalid;
+    while ((unsigned char)*s != '\0')
     {
-        char text[] = "abc";
-        char *tok = strtok(text, ",");
-        assert(strcmp(tok, "abc") == 0);
-        assert(strtok(NULL, ",") == NULL);
+        invalid = 1;
+        for (size_t j = 0; j < len; j++)
+        {
+            if ((unsigned char)*s == (unsigned char)accept[j])
+            {
+                invalid = 0;
+                i++;
+                break;
+            }
+        }
+        if (invalid)
+            break;
+        s++;
+    }
+    return i;
+}
+
+size_t strcspn(const char *s, const char *reject)
+{
+    size_t i = 0;
+    size_t len = strlen(reject);
+    int invalid;
+    while ((unsigned char)*s != '\0')
+    {
+        invalid = 0;
+        for (size_t j = 0; j < len; j++)
+        {
+            if ((unsigned char)*s == (unsigned char)reject[j])
+            {
+                invalid = 1;
+                break;
+            }
+        }
+        if (invalid)
+            break;
+        i++;
+        s++;
     }
 
-    /* ===================== memcpy ===================== */
+    return i;
+}
 
+char *strtok(char *restrict str, const char *restrict delim)
+{
+    static char *last;
+
+    if (str != NULL)
+        last = str;
+
+    if (last == NULL)
+        return NULL;
+
+    last += strspn(last, delim);
+
+    if (*last == '\0')
     {
-        char src[] = "hello";
-        char dst[16];
+        last = NULL;
+        return NULL;
+    };
 
-        memcpy(dst, src, 6);
+    char *token = last;
 
-        assert(strcmp(dst, "hello") == 0);
+    last += strcspn(last, delim);
+
+    if (*last == '\0')
+    {
+        last = NULL;
+    }
+    else
+    {
+        *last = '\0';
+        last++;
     }
 
-    /* ===================== memmove ===================== */
-
-    {
-        char s[] = "abcdef";
-
-        memmove(s + 2, s, 4);
-
-        assert(memcmp(s, "ababcd", 6) == 0);
-    }
-
-    {
-        char s[] = "abcdef";
-
-        memmove(s, s + 2, 4);
-
-        assert(memcmp(s, "cdefef", 6) == 0);
-    }
-
-    /* ===================== memset ===================== */
-
-    {
-        char s[8];
-
-        memset(s, 'A', 8);
-
-        for (int i = 0; i < 8; i++)
-            assert(s[i] == 'A');
-    }
-
-    /* ===================== memcmp ===================== */
-
-    {
-        char a[] = {1,2,3};
-        char b[] = {1,2,3};
-        char c[] = {1,2,4};
-
-        assert(memcmp(a,b,3) == 0);
-        assert(memcmp(a,c,3) < 0);
-        assert(memcmp(c,a,3) > 0);
-        assert(memcmp(a,c,0) == 0);
-    }
-
-    /* ===================== memchr ===================== */
-
-    {
-        char s[] = {'a','b','c','d'};
-
-        assert(memchr(s, 'a', 4) == &s[0]);
-        assert(memchr(s, 'c', 4) == &s[2]);
-        assert(memchr(s, 'x', 4) == NULL);
-        assert(memchr(s, 'd', 2) == NULL);
-    }
-
-    return 0;
+    return token;
 }

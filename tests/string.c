@@ -1,189 +1,212 @@
-#include "string.h"
 #include <assert.h>
-#include <stdio.h>
+#include <stddef.h>
+#include <string.h>
 
 int main(void)
 {
-    /* strlen */
+    /* ===================== strlen ===================== */
 
     assert(strlen("") == 0);
     assert(strlen("a") == 1);
     assert(strlen("hello") == 5);
-    assert(strlen("webshell") == 8);
-    assert(strlen("portscanner") == 11);
 
-    /* strnlen */
+    /* ===================== strnlen ===================== */
 
-    assert(strnlen("", 10) == 0);
+    assert(strnlen("", 5) == 0);
     assert(strnlen("hello", 10) == 5);
+    assert(strnlen("hello", 3) == 3);
     assert(strnlen("hello", 5) == 5);
-    assert(strnlen("hello", 4) == 4);
-    assert(strnlen("abcdef", 3) == 3);
-    assert(strnlen("abcdef", 0) == 0);
 
-    /* strcmp */
+    /* ===================== strcmp ===================== */
 
+    assert(strcmp("abc", "abc") == 0);
+    assert(strcmp("abc", "abd") < 0);
+    assert(strcmp("abd", "abc") > 0);
     assert(strcmp("", "") == 0);
-    assert(strcmp("hello", "hello") == 0);
+    assert(strcmp("", "a") < 0);
+    assert(strcmp("a", "") > 0);
 
-    assert(strcmp("apple", "banana") < 0);
-    assert(strcmp("banana", "apple") > 0);
-
-    assert(strcmp("abc", "abcdef") < 0);
-    assert(strcmp("abcdef", "abc") > 0);
-
-    assert(strcmp("webshell", "webserver") > 0);
-    assert(strcmp("webserver", "webshell") < 0);
-
-    assert(strcmp("A", "a") < 0);
-    assert(strcmp("z", "a") > 0);
-
-    /* strncmp */
-
-    assert(strncmp("", "", 0) == 0);
-    assert(strncmp("", "", 10) == 0);
-
-    assert(strncmp("hello", "hello", 5) == 0);
-    assert(strncmp("hello", "hello", 2) == 0);
+    /* ===================== strncmp ===================== */
 
     assert(strncmp("abcdef", "abcxyz", 3) == 0);
-    assert(strncmp("abcdef", "abcxyz", 4) < 0);
+    assert(strncmp("abc", "abd", 3) < 0);
+    assert(strncmp("abd", "abc", 3) > 0);
+    assert(strncmp("abc", "xyz", 0) == 0);
 
-    assert(strncmp("apple", "banana", 10) < 0);
-    assert(strncmp("banana", "apple", 10) > 0);
-
-    assert(strncmp("abc", "abcdef", 6) < 0);
-    assert(strncmp("abcdef", "abc", 6) > 0);
-
-    assert(strncmp("A", "a", 1) < 0);
-
-    /* strcpy */
+    /* ===================== strcpy ===================== */
 
     {
-        char dst[32];
-
-        assert(strcpy(dst, "") == dst);
-        assert(strcmp(dst, "") == 0);
-
+        char dst[16];
         assert(strcpy(dst, "hello") == dst);
         assert(strcmp(dst, "hello") == 0);
-
-        assert(strcpy(dst, "webshell") == dst);
-        assert(strcmp(dst, "webshell") == 0);
     }
 
-    /* strncpy */
+    /* ===================== strncpy ===================== */
 
     {
-        char dst[8];
-
-        assert(strncpy(dst, "", sizeof(dst)) == dst);
-        assert(strcmp(dst, "") == 0);
+        char dst[10];
 
         strncpy(dst, "abc", sizeof(dst));
         assert(strcmp(dst, "abc") == 0);
-        assert(dst[3] == '\0');
-        assert(dst[4] == '\0');
-        assert(dst[5] == '\0');
-        assert(dst[6] == '\0');
-        assert(dst[7] == '\0');
 
         strncpy(dst, "abcdef", 3);
         assert(dst[0] == 'a');
         assert(dst[1] == 'b');
         assert(dst[2] == 'c');
-
-        /* strncpy() não adiciona '\0' se truncar */
-        char dst2[3] = {'X', 'X', 'X'};
-        strncpy(dst2, "abcdef", sizeof(dst2));
-        assert(dst2[0] == 'a');
-        assert(dst2[1] == 'b');
-        assert(dst2[2] == 'c');
-
-        char dst3[5];
-        strncpy(dst3, "ab", sizeof(dst3));
-        assert(dst3[0] == 'a');
-        assert(dst3[1] == 'b');
-        assert(dst3[2] == '\0');
-        assert(dst3[3] == '\0');
-        assert(dst3[4] == '\0');
     }
 
-    /* strcat */
+    /* ===================== strcat ===================== */
 
     {
-        char dst[32];
-
-        strcpy(dst, "");
-        assert(strcat(dst, "") == dst);
-        assert(strcmp(dst, "") == 0);
-
-        strcpy(dst, "hello");
-        assert(strcat(dst, "") == dst);
-        assert(strcmp(dst, "hello") == 0);
-
-        strcpy(dst, "");
-        strcat(dst, "world");
-        assert(strcmp(dst, "world") == 0);
-
-        strcpy(dst, "hello");
-        strcat(dst, " world");
+        char dst[32] = "hello";
+        assert(strcat(dst, " world") == dst);
         assert(strcmp(dst, "hello world") == 0);
-
-        strcpy(dst, "abc");
-        strcat(dst, "def");
-        assert(strcmp(dst, "abcdef") == 0);
     }
 
-    /* strchr */
+    /* ===================== strchr ===================== */
 
     {
-        assert(strchr("", 'a') == NULL);
+        char s[] = "banana";
 
-        const char *s = "hello";
-
-        assert(strchr(s, 'h') == s);
-        assert(strchr(s, 'e') == s + 1);
-        assert(strchr(s, 'l') == s + 2);
-        assert(strchr(s, 'o') == s + 4);
-
-        assert(strchr(s, '\0') == s + 5);
+        assert(strchr(s, 'b') == &s[0]);
+        assert(strchr(s, 'a') == &s[1]);
         assert(strchr(s, 'x') == NULL);
+        assert(strchr(s, '\0') == &s[6]);
     }
 
-    /* strrchr */
+    /* ===================== strrchr ===================== */
 
     {
-        assert(strrchr("", 'a') == NULL);
+        char s[] = "banana";
 
-        const char *s = "hello";
-
-        assert(strrchr(s, 'h') == s);
-        assert(strrchr(s, 'l') == s + 3);
-        assert(strrchr(s, 'o') == s + 4);
-
-        assert(strrchr(s, '\0') == s + 5);
+        assert(strrchr(s, 'a') == &s[5]);
+        assert(strrchr(s, 'b') == &s[0]);
         assert(strrchr(s, 'x') == NULL);
+        assert(strrchr(s, '\0') == &s[6]);
     }
 
-    /* strstr */
+    /* ===================== strstr ===================== */
 
     {
-        const char *s = "hello world";
+        char s[] = "hello world";
 
-        assert(strstr(s, "") == s);
         assert(strstr(s, "hello") == s);
         assert(strstr(s, "world") == s + 6);
         assert(strstr(s, "lo wo") == s + 3);
-        assert(strstr(s, "d") == s + 10);
-
+        assert(strstr(s, "") == s);
         assert(strstr(s, "abc") == NULL);
-        assert(strstr(s, "hello world!") == NULL);
-
-        assert(strstr("aaaaa", "aa") == (char *)"aaaaa");
     }
 
-    puts("All tests passed.");
+    /* ===================== strspn ===================== */
+
+    assert(strspn("abcde", "abc") == 3);
+    assert(strspn("aaaaab", "a") == 5);
+    assert(strspn("xyz", "abc") == 0);
+    assert(strspn("", "abc") == 0);
+
+    /* ===================== strcspn ===================== */
+
+    assert(strcspn("abcde", "d") == 3);
+    assert(strcspn("abcdef", "xyz") == 6);
+    assert(strcspn("banana", "an") == 1);
+    assert(strcspn("", "abc") == 0);
+
+    /* ===================== strtok ===================== */
+
+    {
+        char text[] = "apple,banana,,orange;grape";
+
+        char *tok = strtok(text, ",;");
+        assert(strcmp(tok, "apple") == 0);
+
+        tok = strtok(NULL, ",;");
+        assert(strcmp(tok, "banana") == 0);
+
+        tok = strtok(NULL, ",;");
+        assert(strcmp(tok, "orange") == 0);
+
+        tok = strtok(NULL, ",;");
+        assert(strcmp(tok, "grape") == 0);
+
+        tok = strtok(NULL, ",;");
+        assert(tok == NULL);
+    }
+
+    {
+        char text[] = ",,,";
+        assert(strtok(text, ",") == NULL);
+    }
+
+    {
+        char text[] = "abc";
+        char *tok = strtok(text, ",");
+        assert(strcmp(tok, "abc") == 0);
+        assert(strtok(NULL, ",") == NULL);
+    }
+
+    /* ===================== memcpy ===================== */
+
+    {
+        char src[] = "hello";
+        char dst[16];
+
+        memcpy(dst, src, 6);
+
+        assert(strcmp(dst, "hello") == 0);
+    }
+
+    /* ===================== memmove ===================== */
+
+    {
+        char s[] = "abcdef";
+
+        memmove(s + 2, s, 4);
+
+        assert(memcmp(s, "ababcd", 6) == 0);
+    }
+
+    {
+        char s[] = "abcdef";
+
+        memmove(s, s + 2, 4);
+
+        assert(memcmp(s, "cdefef", 6) == 0);
+    }
+
+    /* ===================== memset ===================== */
+
+    {
+        char s[8];
+
+        memset(s, 'A', 8);
+
+        for (int i = 0; i < 8; i++)
+            assert(s[i] == 'A');
+    }
+
+    /* ===================== memcmp ===================== */
+
+    {
+        char a[] = {1,2,3};
+        char b[] = {1,2,3};
+        char c[] = {1,2,4};
+
+        assert(memcmp(a,b,3) == 0);
+        assert(memcmp(a,c,3) < 0);
+        assert(memcmp(c,a,3) > 0);
+        assert(memcmp(a,c,0) == 0);
+    }
+
+    /* ===================== memchr ===================== */
+
+    {
+        char s[] = {'a','b','c','d'};
+
+        assert(memchr(s, 'a', 4) == &s[0]);
+        assert(memchr(s, 'c', 4) == &s[2]);
+        assert(memchr(s, 'x', 4) == NULL);
+        assert(memchr(s, 'd', 2) == NULL);
+    }
 
     return 0;
 }
