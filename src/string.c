@@ -255,3 +255,44 @@ void *memmove(void *dest, const void *src, size_t n)
 
     return dest;
 }
+
+void *memset(void *s, int c, size_t n)
+{
+    unsigned char *current = s;
+    unsigned char value = (unsigned char)c;
+    while (n--)
+    {
+        *current = value;
+        current++;
+    }
+    return s;
+}
+
+int memcmp(const void *s1, const void *s2, size_t n)
+{
+    const unsigned char *current1 = s1;
+    const unsigned char *current2 = s2;
+
+    while (n--)
+    {
+        if (*current1 != *current2)
+            return *current1 - *current2;
+        current1++;
+        current2++;
+    }
+
+    return 0;
+}
+
+void *memchr(const void *s, int c, size_t n)
+{
+    const unsigned char *current = s;
+
+    while (n--)
+    {
+        if (*current == (unsigned char)c) return (void *)current;
+        current++;
+    }
+
+    return NULL;
+}
