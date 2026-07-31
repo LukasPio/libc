@@ -194,18 +194,26 @@ char *strtok(char *restrict str, const char *restrict delim)
     if (str != NULL)
         last = str;
 
-    if (last == NULL || *last == '\0')
+    if (last == NULL)
         return NULL;
 
     last += strspn(last, delim);
 
     if (*last == '\0')
+    {
+        last = NULL;
         return NULL;
+    };
 
     char *token = last;
+
     last += strcspn(last, delim);
 
-    if (*last != '\0')
+    if (*last == '\0')
+    {
+        last = NULL;
+    }
+    else
     {
         *last = '\0';
         last++;
