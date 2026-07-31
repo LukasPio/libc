@@ -221,3 +221,37 @@ char *strtok(char *restrict str, const char *restrict delim)
 
     return token;
 }
+
+void *memcpy(void *restrict dst, const void *restrict src, size_t n)
+{
+    unsigned char *d = (unsigned char *)dst;
+    unsigned char *s = (unsigned char *)src;
+    while (n--)
+    {
+        *d = *s;
+        d++;
+        s++;
+    }
+    return dst;
+}
+
+void *memmove(void *dest, const void *src, size_t n)
+{
+    unsigned char *d = (unsigned char *)dest;
+    unsigned char *s = (unsigned char *)src;
+    if (dest < src)
+    {
+        while (n--)
+            *d++ = *s++;
+    }
+    else
+    {
+        d += n;
+        s += n;
+
+        while (n--)
+            *--d = *--s;
+    }
+
+    return dest;
+}
