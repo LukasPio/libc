@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <stddef.h>
-#include <string.h>
+#include <mystring.h>
 
 int main(void)
 {
