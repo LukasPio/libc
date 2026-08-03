@@ -2,3 +2,4 @@
 #include <fcntl.h>
 
 int putchar(int c);
+int puts(const char *s);
