@@ -7,6 +7,7 @@ The purpose of this repository is to understand how common C library functions w
 ## Current Scope
 
 - `string.h`
+- `stdlib.h`
 - `stdio.h`
 
 Additional libraries may be implemented in the future.
@@ -35,9 +36,11 @@ Additional libraries may be implemented in the future.
 ├── include/
 │   ├── string.h
 │   └── stdio.h
+│   └── stdlib.h
 ├── src/
-│   ├── string/
-│   └── stdio/
+│   ├── string.c
+│   └── stdio.c
+│   └── stdlib.c
 ├── tests/
 ├── examples/
 ├── Makefile
@@ -47,10 +50,11 @@ Additional libraries may be implemented in the future.
 
 ## Progress
 
-| Library | Status |
-|---------|--------|
-| `string.h`  | ✅ Completed,  |
-| `stdio.h`   | 🚧 In Progress |
+| Library |        Status        |
+|---------|----------------------|
+| `string.h`   | ✅ Completed,   |
+| `stdlib.h`   | 🚧 In Progress  | 
+| `stdio.h`    | ⏳ Paused       |
 
 ## Notes
 
